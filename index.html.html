@@ -1,0 +1,1938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRIX MEDIA | Premium Creative Agency</title>
+	<link rel="icon" type="image/png" href="assets/logos/favicon.png">
+    <meta name="description" content="Krix Media is a premium media agency specializing in video production, strategy, and digital growth.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Oswald:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- 1. CORE RESET & VARIABLES --- */
+        :root {
+            --bg: #050505;
+            --surface: #0a0a0a;
+            --border: rgba(255,255,255,0.1);
+            --text: #ffffff;
+            --text-muted: #888;
+            --accent: #fff;
+            --font-head: 'Oswald', sans-serif;
+            --font-body: 'Manrope', sans-serif;
+            --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-body);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- 2. CUSTOM CURSOR --- */
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0; transform: translate(-50%, -50%);
+            border-radius: 50%; z-index: 9999; pointer-events: none;
+        }
+        .cursor-dot { width: 8px; height: 8px; background: white; }
+        .cursor-outline {
+            width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        body.hovering .cursor-outline {
+            width: 60px; height: 60px; background-color: rgba(255,255,255,0.1); border-color: transparent;
+        }
+
+        /* --- 3. UTILITY CLASSES --- */
+        .container { max-width: 1400px; margin: 0 auto; padding: 0 40px; position: relative; z-index: 2; }
+        section { padding: 140px 0; border-bottom: 1px solid var(--border); position: relative; }
+        
+        h1, h2, h3, h4, h5 { font-family: var(--font-head); text-transform: uppercase; font-weight: 500; letter-spacing: 0.02em; color: white; }
+        .display-text { font-size: clamp(3rem, 9vw, 8rem); line-height: 0.9; font-weight: 700; letter-spacing: -0.02em; }
+        .subtitle { 
+            font-family: var(--font-body); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; 
+            color: var(--text-muted); margin-bottom: 1.5rem; display: block; font-weight: 600; 
+        }
+        
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s var(--ease-out); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* --- 4. NAVIGATION (LOGO UPDATED) --- */
+        nav {
+            position: fixed; top: 0; left: 0; width: 100%; padding: 30px 50px; z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            mix-blend-mode: exclusion; transition: padding 0.4s ease;
+        }
+        nav.scrolled { padding: 20px 50px; mix-blend-mode: normal; background: rgba(5,5,5,0.9); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); }
+        
+        .logo { display: block; width: 180px; height: 50px; } /* Adjust width/height as per your logo */
+        .logo img { height: 100%; width: auto; object-fit: contain; }
+
+        .nav-links { display: flex; gap: 40px; align-items: center; }
+        .nav-item { 
+            color: rgba(255,255,255,0.7); text-decoration: none; text-transform: uppercase; 
+            font-size: 0.8rem; letter-spacing: 0.1em; transition: 0.3s; 
+        }
+        .nav-item:hover { color: white; }
+        @media(max-width: 900px) { .nav-links { display: none; } nav { padding: 20px; } }
+
+        /* --- 5. CTA BUTTON --- */
+        .btn-magic {
+            position: relative; padding: 14px 36px; background: transparent; border-radius: 99px;
+            color: white; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.15em; font-weight: 700;
+            text-decoration: none; overflow: hidden; display: inline-flex; align-items: center; justify-content: center;
+            transition: 0.3s;
+        }
+        .btn-magic::before {
+            content: ""; position: absolute; inset: 0; border-radius: 99px; padding: 1.5px; 
+            background: conic-gradient(from 0deg, transparent 0%, transparent 60%, white 100%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+            animation: spin-border 4s linear infinite;
+        }
+        .btn-magic:hover { transform: scale(1.05); background: rgba(255,255,255,0.05); }
+        @property --angle { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+        @keyframes spin-border { from { --angle: 0deg; } to { --angle: 360deg; } }
+        .btn-magic::before { animation: rotate 4s linear infinite; background: conic-gradient(from var(--angle), transparent 0%, transparent 70%, white 100%); }
+        @keyframes rotate { to { --angle: 360deg; } }
+
+        /* --- 6. HERO SECTION --- */
+        .hero {
+            height: 110vh; width: 100%; position: relative; overflow: hidden;
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+            padding-top: 15vh; perspective: 1500px;
+            background: radial-gradient(circle at center, #111 0%, #000 80%);
+        }
+        .hero-text { z-index: 10; text-align: center; width: 100%; margin-bottom: 20px; }
+        .headline-wrapper { display: flex; justify-content: center; align-items: baseline; gap: 0.3ch; flex-wrap: wrap; }
+        .word-stack { display: grid; grid-template-columns: 1fr; text-align: left; position: relative; }
+        .word-stack span {
+            grid-row: 1; grid-column: 1; opacity: 0; transform: translateY(100%);
+            transition: transform 0.8s var(--ease-out), opacity 0.8s ease; visibility: hidden;
+        }
+        .word-stack span.active { opacity: 1; transform: translateY(0); visibility: visible; }
+        .word-stack span.exit { opacity: 0; transform: translateY(-100%); visibility: visible; }
+
+        .hero-marquee-container {
+            width: 120%; height: 650px; transform: rotate(-3deg) translateY(20px) translate3d(0,0,0); 
+            overflow: visible; position: relative; z-index: 1;
+            mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            -webkit-mask-image: linear-gradient(to right, transparent, black 15%, black 85%, transparent);
+            backface-visibility: hidden;
+        }
+        .hero-track { display: flex; gap: 40px; width: max-content; animation: heroScroll 40s linear infinite; will-change: transform; padding-top: 50px; padding-bottom: 50px; }
+        .hero-card {
+            width: 300px; height: 533px; border-radius: 24px; overflow: hidden; flex-shrink: 0; background: #111;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6); transition: transform 0.3s; position: relative; border: 1px solid rgba(255,255,255,0.1);
+            transform: translateZ(0);
+        }
+        .hero-card video { width: 100%; height: 100%; object-fit: cover; }
+        @keyframes heroScroll { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-50%, 0, 0); } }
+
+        /* --- 7. PROOF STRIP --- */
+        .proof-strip { padding: 80px 0; border-bottom: 1px solid var(--border); display: flex; justify-content: center; flex-wrap: wrap; gap: 100px; background: var(--surface); }
+        .stat { text-align: center; opacity: 0; transform: translateY(20px); transition: 0.8s; }
+        .stat.active { opacity: 1; transform: translateY(0); }
+        .stat h3 { font-size: 3.5rem; margin-bottom: 0; font-weight: 700; color: #fff; }
+        .stat p { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-muted); margin-top: 5px; }
+
+        /* --- 8. EXPERTISE --- */
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); }
+        .service-box { background: var(--bg); padding: 60px 40px; transition: 0.4s; height: 350px; display: flex; flex-direction: column; justify-content: flex-start; position: relative; overflow: hidden; }
+        .service-box:hover { background: #0c0c0c; }
+        .service-box h3 { font-size: 1.8rem; margin-bottom: 15px; font-weight: 600; }
+        .service-box p { font-size: 1rem; color: #999; }
+        .service-icon { font-size: 2rem; color: #fff; margin-bottom: 30px; opacity: 0.7; }
+
+        /* --- 9. YOUTUBE PROMO SECTION (UPDATED) --- */
+        .motion-section { padding: 100px 0; background: #000; text-align: center; }
+        .motion-player-wrapper {
+            margin-top: 70px; width: 100%; max-width: 1300px; margin-left: auto; margin-right: auto;
+            position: relative; border-radius: 16px; overflow: hidden; border: 1px solid var(--border);
+            aspect-ratio: 21/9; background: #111;
+        }
+        /* Iframe styling for premium feel */
+        .motion-player-wrapper iframe {
+            position: absolute; top: 50%; left: 50%;
+            width: 100%; height: 100%;
+            transform: translate(-50%, -50%) scale(1.0); /* Scale up slightly to hide black bars if any */
+            pointer-events: auto; /* Disable native interaction to allow custom button */
+        }
+        
+        #muteBtn {
+            position: absolute; bottom: 30px; right: 30px; width: 50px; height: 50px; border-radius: 50%;
+            background: rgba(255,255,255,0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); 
+            color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.3s; z-index: 10;
+        }
+        #muteBtn:hover { background: white; color: black; transform: scale(1.1); }
+
+        /* --- 10. FOUNDER AUTHORITY SECTION (NEW) --- */
+        .founder-section { background: #050505; border-bottom: 1px solid var(--border); }
+        .founder-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 80px; align-items: center; }
+        .founder-content p { font-size: 1.2rem; color: #bbb; line-height: 1.8; margin-bottom: 40px; }
+        .founder-socials { display: flex; gap: 20px; }
+        .founder-btn { 
+            padding: 15px 30px; border-radius: 8px; border: 1px solid #333; text-decoration: none; 
+            color: white; font-weight: 600; display: flex; align-items: center; gap: 10px; transition: 0.3s;
+        }
+        .founder-btn:hover { background: white; color: black; transform: translateY(-5px); }
+        .reach-card { background: var(--surface); border: 1px solid var(--border); padding: 40px; border-radius: 20px; text-align: center; }
+        .reach-card h2 { font-size: 5rem; margin-bottom: 10px; font-weight: 700; color: #fff; }
+
+        /* --- 11. CASE STUDIES --- */
+        .case-studies { padding: 80px 0 120px; }
+        .case-list-full { display: flex; flex-direction: column; gap: 0; max-width: 1200px; margin: 0 auto; }
+        .case-item-full { padding: 60px 20px; border-bottom: 1px solid var(--border); cursor: none; transition: 0.3s; opacity: 0.6; display: flex; justify-content: space-between; align-items: center; }
+        .case-item-full:hover { opacity: 1; background: rgba(255,255,255,0.02); }
+        .case-item-full h3 { font-size: 3rem; margin: 0; font-weight: 600; }
+        .case-arrow { font-size: 2rem; transform: rotate(-45deg); transition: 0.3s; opacity: 0; }
+        .case-item-full:hover .case-arrow { opacity: 1; transform: rotate(0deg); }
+
+        /* --- 12. TEAM --- */
+        .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .team-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; filter: grayscale(0%); transition: 0.5s; margin-bottom: 20px; border-radius: 12px; }
+        .team-social { display: inline-block; margin-top: 10px; color: #fff; font-size: 1.2rem; opacity: 0.6; transition: 0.3s; }
+        .team-social:hover { opacity: 1; transform: scale(1.2); }
+
+        /* --- 13. MARQUEE --- */
+        .marquee { padding: 70px 0; overflow: hidden; background: var(--surface); }
+        .track {
+  display: flex;
+  gap: 100px;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+
+        /* --- 15. MODAL --- */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.96); z-index: 5000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: 0.4s; backdrop-filter: blur(10px); }
+        .modal.open { opacity: 1; pointer-events: all; }
+        .modal-inner { width: 90%; max-width: 900px; background: #0f0f0f; border: 1px solid #333; padding: 80px; max-height: 90vh; overflow-y: auto; position: relative; border-radius: 8px; }
+        .modal-close { position: absolute; top: 30px; right: 30px; font-size: 2.5rem; cursor: pointer; color: white; transition: 0.3s; }
+        
+        .modal-content h2 { font-size: 3rem; margin-bottom: 20px; color: white; }
+        .modal-content .focus-text { font-size: 1.2rem; color: #fff; font-style: italic; margin-bottom: 30px; border-left: 3px solid white; padding-left: 20px; }
+        .modal-content .client-block { margin-bottom: 50px; padding-bottom: 30px; border-bottom: 1px solid #333; }
+        .modal-content h4 { font-size: 1.1rem; color: var(--text-muted); text-transform: uppercase; margin-top: 25px; margin-bottom: 10px; }
+        .modal-content p, .modal-content li { font-size: 1.1rem; line-height: 1.7; color: #ccc; margin-bottom: 10px; }
+        .modal-content ul { padding-left: 20px; color: #888; }
+        .modal-content .impact-box { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 8px; }
+
+        footer { padding: 20px 0 20px; border-top: 1px solid var(--border); color: #555; font-size: 0.9rem; background: #000; }
+		/* === PREMIUM FOOTER LEGAL LINKS === */
+
+.footer-legal {
+  display: flex;
+  gap: 28px;
+}
+
+.footer-legal button {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 1.6px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+/* underline reveal */
+.footer-legal button::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0%;
+  height: 1px;
+  background: rgba(255,255,255,0.6);
+  transition: width 0.3s ease;
+}
+
+.footer-legal button:hover {
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.footer-legal button:hover::after {
+  width: 100%;
+}
+
+.footer-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-links {
+    display: flex;
+    gap: 30px;
+}
+
+        @media(max-width: 900px) {
+            .display-text { font-size: 3.5rem; }
+            .hero-marquee-container { transform: rotate(-3deg) translateY(20px) scale(0.7); height: 500px; }
+            .founder-grid { grid-template-columns: 1fr; }
+            .grid-3, .team-grid { grid-template-columns: 1fr; }
+        }
+	/* ===== CASE STUDY TILES ===== */
+
+.case-tiles {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    margin-top: 60px;
+}
+
+.case-tile {
+    background: linear-gradient(180deg, #0b0b0b, #050505);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 50px 40px;
+    min-height: 220px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: all 0.4s ease;
+}
+
+.case-tile h3 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.case-tile p {
+    font-size: 0.95rem;
+    color: #888;
+    line-height: 1.6;
+}
+
+.case-tile span {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}
+
+.case-tile:hover {
+    transform: translateY(-10px);
+    border-color: rgba(255,255,255,0.25);
+    background: linear-gradient(180deg, #111, #070707);
+}
+
+.case-tile:hover span {
+    opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .case-tiles {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .case-tiles {
+        grid-template-columns: 1fr;
+    }
+}
+/* ===============================
+   CLIENT LOGO SECTION — FINAL FIX
+   =============================== */
+
+.clients-marquee {
+  padding: 40px 0 0px;
+  background: #000;
+}
+
+/* Title */
+.marquee-title {
+  text-align: center;
+  font-size: 1.4rem;               /* BIGGER */
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
+  margin-bottom: 30px;             /* CLOSER to logos */
+}
+
+/* Marquee wrapper */
+.marquee {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Moving track */
+.track {
+  display: flex;
+  align-items: center;             /* CRITICAL */
+  gap: 100px;
+  width: max-content;
+  animation: marquee-scroll 30s linear infinite;
+}
+
+/* Logo container */
+.logo-item {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Actual logo */
+.logo-item img {
+  height: 80px;                    /* CONTROL SIZE HERE */
+  width: 140px;
+  object-fit: contain;
+  opacity: 0.9;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.logo-item img:hover {
+  opacity: 1;
+  transform: scale(1.08);
+}
+
+/* Animation */
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .marquee-title {
+    font-size: 0.9rem;
+  }
+
+  .logo-item img {
+    height: 48px;
+  }
+}
+
+.testimonials {
+  padding: 120px 80px;
+}
+
+.section-head span {
+  font-size: 12px;
+  letter-spacing: 2px;
+  opacity: 0.6;
+}
+
+.section-head h2 {
+  font-size: 36px;
+  margin-top: 10px;
+}
+
+.testimonial-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 50px;
+}
+
+.testimonial-card {
+  background: rgba(255,255,255,0.035);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 32px;
+}
+
+.testimonial-card p {
+  font-size: 15px;
+  line-height: 1.7;
+  opacity: 0.85;
+}
+
+.testimonial-card h4 {
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+.testimonial-card span {
+  font-size: 13px;
+  opacity: 0.6;
+}
+
+.testimonial-card.muted {
+  opacity: 0.75;
+  font-style: italic;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .testimonial-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===============================
+   LUXURY WORK SHOWCASE
+   =============================== */
+
+.works-showcase {
+  padding: 50px 0 80px;
+  background: #050505;
+  border-bottom: 1px solid var(--border);
+}
+
+.works-showcase .section-title {
+  font-family: 'Oswald', sans-serif;
+  font-size: 44px;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #ffffff;
+  margin-bottom: 28px;
+  position: relative;
+}
+
+.works-showcase .section-title::after {
+  content: "";
+  display: block;
+  width: 640px;
+  height: 3px;
+  background: linear-gradient(90deg, #ffffff, #777);
+  margin: 16px auto 0;
+  border-radius: 2px;
+}
+
+
+.works-grid {
+  margin-top: 80px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 28px;
+}
+
+.work-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 22px;
+  background: #000;
+  border: 1px solid rgba(255,255,255,0.08);
+  cursor: pointer;
+  transform: translateY(40px) scale(0.97);
+  opacity: 0;
+  transition:
+    transform 1s var(--ease-out),
+    opacity 1s ease,
+    box-shadow 0.6s ease;
+}
+
+.work-card.active {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.work-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+/* Aspect ratios */
+.work-card.square {
+  aspect-ratio: 1 / 1;
+}
+
+.work-card.wide {
+  aspect-ratio: 16 / 9;
+  grid-column: span 2;
+}
+
+/* Premium hover depth */
+.work-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at center,
+    rgba(255,255,255,0.08),
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.work-card:hover {
+  box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+}
+
+.work-card:hover img {
+  transform: scale(1.08);
+}
+
+.work-card:hover::after {
+  opacity: 1;
+}
+
+/* ---------- LIGHTBOX ---------- */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  z-index: 6000;
+}
+
+.lightbox.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.lightbox img {
+  max-width: 92%;
+  max-height: 92%;
+  transform: scale(0.85);
+  transition: transform 0.6s var(--ease-out);
+  border-radius: 12px;
+}
+
+.lightbox.open img {
+  transform: scale(1);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 40px;
+  right: 50px;
+  font-size: 3rem;
+  color: white;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: 0.3s;
+}
+
+.lightbox-close:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .works-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .work-card.wide {
+    grid-column: span 1;
+  }
+
+  .lightbox-close {
+    top: 20px;
+    right: 25px;
+  }
+}
+
+.more-works-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 60px;
+}
+
+.more-works-btn {
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-size: 14px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  cursor: default;
+  transition: all 0.35s ease;
+}
+
+/* Hover – premium, not flashy */
+.more-works-btn:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 25px rgba(255,255,255,0.12);
+  transform: translateY(-2px);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+#work {
+  scroll-margin-top: 90px;
+}
+
+/* Floating Quote Button */
+.quote-fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 999;
+  font-family: 'Manrope', sans-serif;
+}
+
+/* Button */
+.quote-button {
+  background: #fff;
+  color: #000;
+  padding: 12px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+}
+
+/* Card */
+.quote-card {
+  position: absolute;
+  bottom: 56px;
+  right: 0;
+  width: 260px;
+  background: #0b0b0b;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 14px;
+  padding: 18px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: all 0.35s ease;
+}
+
+/* Reveal on hover */
+.quote-fab:hover .quote-card {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Text styling */
+.quote-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+.quote-line {
+  font-size: 12px;
+  color: rgba(255,255,255,0.65);
+  margin-bottom: 12px;
+}
+
+.quote-contact span {
+  display: block;
+  font-size: 13px;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, #ffffff, #777777);
+  z-index: 9999;
+}
+
+/* === FINAL FOOTER LAYOUT === */
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1.6fr 0.6fr; /* brand | contact | explore */
+  gap: 80px; /* MORE breathing space */
+  align-items: start;
+}
+
+/* BRAND */
+.footer-brand h3 {
+  font-size: 30px;
+  letter-spacing: 2px;
+  margin-bottom: 6px;
+}
+
+.footer-brand p {
+  font-size: 14px;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 6px;
+}
+
+.footer-brand span {
+  font-size: 14px;
+  color: rgba(255,255,255,0.55);
+}
+
+/* SOCIALS UNDER LOCATION */
+.brand-socials {
+  display: flex;
+  gap: 14px;
+  margin-top: 22px;
+}
+
+.social-btn {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;   /* FIX underline */
+  transition: all 0.3s ease;
+}
+
+.social-btn:hover {
+  background: white;
+  color: black;
+  transform: scale(1.1);
+}
+
+/* CONTACT COLUMN */
+.footer-contact h4 {
+  font-size: 22px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  color: rgba(255,255,255,0.85);
+}
+
+.contact-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  margin-bottom: 18px;
+  transition: all 0.3s ease;
+}
+
+.contact-link:hover {
+  background: rgba(255,255,255,0.08);
+  transform: translateY(-2px);
+}
+
+/* EXPLORE – PUSH HARD RIGHT */
+.footer-nav {
+  justify-self: end;
+}
+
+.footer-nav h4 {
+  font-size: 22px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.footer-nav a {
+  display: block;
+  margin-bottom: 10px;
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-nav a:hover {
+  color: white;
+}
+
+/* MOBILE */
+@media (max-width: 900px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+
+  .footer-nav {
+    justify-self: start;
+  }
+}
+/* FIX: Reduce padding ONLY for footer section */
+section.main-footer {
+  padding: 48px 0 30px;
+  border-bottom: none;
+}
+/* CASE STUDIES – STRONG HEADING */
+#cases .section-title {
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  margin-top: 12px;
+}
+#cases .subtitle {
+  margin-bottom: 2px;
+  opacity: 0.6;
+}
+
+Tablet Optimisation for Redmi Pad 2 
+/* --------- TABLETS (PORTRAIT + SMALL LANDSCAPE) --------- */
+@media (max-width: 1024px) {
+
+  section {
+    padding: 80px 0;
+  }
+
+  .hero {
+    height: auto;
+    padding-top: 120px;
+  }
+
+  .hero-marquee-container {
+    height: 420px;
+    transform: rotate(-2deg);
+  }
+
+  .grid-3,
+  .team-grid,
+  .testimonial-grid,
+  .works-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Case studies heading fix */
+  .case-studies .section-title {
+    font-size: 32px;
+    margin-bottom: 40px;
+  }
+
+  .case-tiles {
+    gap: 24px;
+  }
+
+  /* Footer */
+  .footer-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+  }
+
+  .footer-nav {
+    justify-self: start;
+  }
+}
+
+/* --------- MOBILE --------- */
+@media (max-width: 600px) {
+
+  section {
+    padding: 60px 0;
+  }
+
+  .display-text {
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+
+  .hero-marquee-container {
+    height: 300px;
+    transform: none;
+  }
+
+  .grid-3,
+  .team-grid,
+  .testimonial-grid,
+  .works-grid,
+  .case-tiles {
+    grid-template-columns: 1fr;
+  }
+
+  /* Footer stack */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 36px;
+  }
+
+  .footer-flex {
+    flex-direction: column;
+    gap: 16px;
+    text-align: center;
+  }
+
+  .footer-legal {
+    justify-content: center;
+  }
+}
+
+
+
+/* ===============================
+   RESPONSIVE SYSTEM (FINAL)
+   =============================== */
+
+/* --------- LARGE TABLETS / iPAD PRO / REDMI PAD --------- */
+/* Covers 2560x1600, 2732x2048, etc */
+@media (max-width: 1400px) {
+
+  .container {
+    max-width: 1200px;
+    padding: 0 32px;
+  }
+
+  section {
+    padding: 100px 0;
+  }
+
+  .display-text {
+    font-size: clamp(2.8rem, 6vw, 4.5rem);
+  }
+
+  /* Footer tightening (your main issue earlier) */
+  .footer-grid {
+    gap: 50px; /* REDUCE huge gaps */
+  }
+}
+
+/* ===============================
+   HERO VIDEO FIX — MOBILE ONLY
+   =============================== */
+@media (max-width: 600px) {
+
+  /* Stop rotation on mobile */
+  .hero-marquee-container {
+    transform: none;
+    height: auto;
+  }
+
+  /* Let cards resize naturally */
+  .hero-card {
+    width: 85vw;
+    height: auto;
+    aspect-ratio: 9 / 16; /* MOBILE FRIENDLY */
+  }
+
+  /* CRITICAL FIX */
+  .hero-card video {
+    object-fit: contain;   /* NO CROPPING */
+    background: black;     /* Clean bars if needed */
+  }
+}
+
+@media (max-width: 600px) {
+  .hero-card video {
+    border-radius: 18px;
+  }
+}
+
+
+
+    </style>
+</head>
+<body>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+    <div id="scroll-progress"></div>
+
+    <nav id="nav">
+        <a href="#" class="logo">
+            <img src="Assets\Logos\KRIX MEDIA LOGO.png" alt="KRIX MEDIA">
+        </a>
+        <div class="nav-links">
+            <a href="#hero" class="nav-item">Home</a>
+            <a href="#work" class="nav-item">OUR Work</a>
+            <a href="#services" class="nav-item">Our Expertise</a>
+            <a href="#team" class="nav-item">Team</a>
+            <a href="#contact" class="btn-magic">Get Quote</a>
+        </div>
+    </nav>
+
+    <section id="hero" class="hero">
+        <div class="hero-text">
+            <h1 class="display-text">
+                WE MAKE BRANDS<br>
+                <div class="headline-wrapper">
+                    <span>FEEL</span>
+                    <div class="word-stack">
+                        <span class="active">ALIVE</span>
+                        <span>STRATEGY</span>
+                        <span>CREATIVE</span>
+                        <span>CONTENT</span>
+                    </div>
+                </div>
+            </h1>
+        </div>
+
+        <div class="hero-marquee-container">
+            <div class="hero-track hover-trigger">
+                <div class="hero-card"><video muted loop playsinline preload="none"><source src="Assets\videos\1.mp4" type="video/mp4"></video></div>
+                <div class="hero-card"><video muted loop playsinline preload="none"><source src="Assets\videos\2.mp4" type="video/mp4"></video></div>
+                <div class="hero-card"><video muted loop playsinline preload="none"><source src="Assets\videos\3.mp4" type="video/mp4"></video></div>
+                <div class="hero-card"><video muted loop playsinline preload="none"><source src="Assets\videos\4.mp4" type="video/mp4"></video></div>
+                <div class="hero-card"><video muted loop playsinline preload="none"><source src="Assets\videos\5.mp4" type="video/mp4"></video></div>
+                <div class="hero-card"><video muted loop playsinline preload="none"><source src="Assets\videos\6.mp4" type="video/mp4"></video></div>
+                <div class="hero-card"><video muted loop playsinline preload="none"><source src="Assets\videos\7.mp4" type="video/mp4"></video></div>
+                <div class="hero-card"><video muted loop playsinline preload="none"><source src="Assets\videos\8.mp4" type="video/mp4"></video></div>
+                <div class="hero-card"><video muted loop playsinline preload="none"><source src="Assets\videos\1.mp4" type="video/mp4"></video></div>
+                <div class="hero-card"><video muted loop playsinline preload="none"><source src="Assets\videos\2.mp4" type="video/mp4"></video></div>
+                <div class="hero-card"><video muted loop playsinline preload="none"><source src="Assets\videos\3.mp4" type="video/mp4"></video></div>
+                <div class="hero-card"><video muted loop playsinline preload="none"><source src="Assets\videos\4.mp4" type="video/mp4"></video></div>
+                <div class="hero-card"><video muted loop playsinline preload="none"><source src="Assets\videos\5.mp4" type="video/mp4"></video></div>
+                <div class="hero-card"><video muted loop playsinline preload="none"><source src="Assets\videos\6.mp4" type="video/mp4"></video></div>
+                <div class="hero-card"><video muted loop playsinline preload="none"><source src="Assets\videos\7.mp4" type="video/mp4"></video></div>
+                <div class="hero-card"><video muted loop playsinline preload="none"><source src="Assets\videos\8.mp4" type="video/mp4"></video></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="proof-strip">
+        <div class="stat"><h3><span class="counter" data-target="20">0</span>+</h3><p>Real Projects</p></div>
+        <div class="stat"><h3><span class="counter" data-target="2">0</span>+</h3><p>Years Experience</p></div>
+        <div class="stat"><h3>360°</h3><p>Brand Support</p></div>
+        <div class="stat"><h3><span class="counter" data-target="100">0</span>%</h3><p>Satisfaction</p></div>
+    </div>
+
+    <section id="services">
+        <div class="container">
+            <span class="subtitle">Expertise</span>
+            <h2 class="section-title reveal">Our Expertise in</h2>
+            <div class="grid-3">
+                <div class="service-box reveal hover-trigger">
+                    <i class="fa-solid fa-video service-icon"></i>
+                    <div><h3>Video Production</h3><p>Cinematic promos, ads, and storytelling.</p></div>
+                </div>
+                <div class="service-box reveal hover-trigger">
+                    <i class="fa-solid fa-cube service-icon"></i>
+                    <div><h3>3D Animation</h3><p>Product visualization and motion graphics.</p></div>
+                </div>
+                <div class="service-box reveal hover-trigger">
+                    <i class="fa-solid fa-camera service-icon"></i>
+                    <div><h3>Photography</h3><p>Food, product, and event captures.</p></div>
+                </div>
+                <div class="service-box reveal hover-trigger">
+                    <i class="fa-solid fa-rocket service-icon"></i>
+                    <div><h3>Social Growth</h3><p>Strategy, reels, and content management.</p></div>
+                </div>
+                <div class="service-box reveal hover-trigger">
+                    <i class="fa-solid fa-magnifying-glass service-icon"></i>
+                    <div><h3>SEO</h3><p>Search ranking and digital presence.</p></div>
+                </div>
+                <div class="service-box reveal hover-trigger">
+                    <i class="fa-solid fa-pen-nib service-icon"></i>
+                    <div><h3>Design</h3><p>Branding, logos, and visual identity.</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+		<section class="clients-marquee">
+<div class="marquee-title">CLIENTS WE HAVE WORKED WITH</div>
+
+  <div class="marquee">
+    <div class="track">
+
+      <!-- ===== SET 1 ===== -->
+      <div class="logo-item">
+        <img src="Assets\Logos\Client 1.png.jpg" alt="Client 1">
+      </div>
+      <div class="logo-item">
+        <img src="Assets\Logos\Client 2.png.jpg" alt="Client 2">
+      </div>
+      <div class="logo-item">
+        <img src="Assets\Logos\Client 3.png.jpg" alt="Client 3">
+      </div>
+      <div class="logo-item">
+        <img src="Assets\Logos\Client 4.png.jpg" alt="Client 4">
+      </div>
+      <div class="logo-item">
+        <img src="Assets\Logos\Client 5.png.jpg" alt="Client 5">
+      </div>
+      <div class="logo-item">
+        <img src="Assets\Logos\Client 6.png.jpg" alt="Client 6">
+      </div>
+      <div class="logo-item">
+        <img src="Assets\Logos\Client 7.png.png" alt="Client 7">
+      </div>
+      <div class="logo-item">
+        <img src="Assets\Logos\Client 8.png.jpeg" alt="Client 8">
+      </div>
+      <div class="logo-item">
+        <img src="Assets\Logos\Client 9.png.jpg" alt="Client 9">
+      </div>
+
+      <!-- ===== SET 2 (DUPLICATE – MUST MATCH EXACTLY) ===== -->
+      <div class="logo-item">
+        <img src="Assets\Logos\Client 1.png.jpg" alt="Client 1">
+      </div>
+      <div class="logo-item">
+        <img src="Assets\Logos\Client 2.png.jpg" alt="Client 2">
+      </div>
+      <div class="logo-item">
+        <img src="Assets\Logos\Client 3.png.jpg" alt="Client 3">
+      </div>
+      <div class="logo-item">
+        <img src="Assets\Logos\Client 4.png.jpg" alt="Client 4">
+      </div>
+      <div class="logo-item">
+        <img src="Assets\Logos\Client 5.png.jpg" alt="Client 5">
+      </div>
+      <div class="logo-item">
+        <img src="Assets\Logos\Client 6.png.jpg" alt="Client 6">
+      </div>
+      <div class="logo-item">
+        <img src="Assets\Logos\Client 7.png.png" alt="Client 7">
+      </div>
+      <div class="logo-item">
+        <img src="Assets\Logos\Client 8.png.jpeg" alt="Client 8">
+      </div>
+      <div class="logo-item">
+        <img src="Assets\Logos\Client 9.png.jpg" alt="Client 9">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="works-showcase" id="work">
+  <div class="container">
+    <h2 class="section-title reveal" style="text-align:center;">
+      Some of Our Work
+    </h2>
+
+    <div class="works-grid">
+
+      <!-- FOOD (1:1) -->
+      <div class="work-card square reveal hover-trigger">
+        <img src="Assets\images\f1.jpg" alt="">
+      </div>
+      <div class="work-card square reveal hover-trigger">
+        <img src="Assets\images\f2.jpg" alt="">
+      </div>
+      <div class="work-card square reveal hover-trigger">
+        <img src="Assets\images\f3.jpg" alt="">
+      </div>
+      <div class="work-card square reveal hover-trigger">
+        <img src="Assets\images\f4.jpg" alt="">
+      </div>
+      <div class="work-card square reveal hover-trigger">
+        <img src="Assets\images\f5.jpg" alt="">
+      </div>
+      <div class="work-card square reveal hover-trigger">
+        <img src="Assets\images\f6.jpg" alt="">
+      </div>
+      <div class="work-card square reveal hover-trigger">
+        <img src="Assets\images\f7.jpg" alt="">
+      </div>
+      <div class="work-card square reveal hover-trigger">
+        <img src="Assets\images\f8.jpg" alt="">
+      </div>
+      <div class="work-card square reveal hover-trigger">
+        <img src= "Assets\images\f9.jpg"alt="">
+      </div>
+      <div class="work-card square reveal hover-trigger">
+        <img src="Assets\images\f10.jpg" alt="">
+      </div>
+      <div class="work-card square reveal hover-trigger">
+        <img src="Assets\images\f11.jpg" alt="">
+      </div>
+      <div class="work-card square reveal hover-trigger">
+        <img src="Assets\images\f12.jpg" alt="">
+      </div>
+    
+      <!-- TECH THUMBNAILS (16:9) -->
+      <div class="work-card wide reveal hover-trigger">
+        <img src="Assets\images\yt1.jpg" alt="">
+      </div>
+      <div class="work-card wide reveal hover-trigger">
+        <img src="Assets\images\yt2.jpg" alt="">
+      </div>
+      <div class="work-card wide reveal hover-trigger">
+        <img src="Assets\images\yt3.jpg" alt="">
+      </div>
+      <div class="work-card wide reveal hover-trigger">
+        <img src="Assets\images\yt4.jpg" alt="">
+      </div>
+
+    </div>
+  </div>
+  <div class="more-works-wrap">
+  <span class="more-works-btn">
+    And many more projects →
+  </span>
+</div>
+
+</section>
+
+<!-- FULLSCREEN LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <span class="lightbox-close hover-trigger">×</span>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
+
+
+
+
+    <section class="motion-section">
+        <div class="container">
+            <h2 class="display-text" style="font-size:3.5rem; text-align: center; margin-bottom: 20px;">BUILT BY CREATORS.<br>TRUSTED BY BRANDS.</h2>
+            <div class="motion-player-wrapper hover-trigger">
+               <iframe 
+  src="https://www.youtube.com/embed/NidvlEyHVvw"
+  ?autoplay=1
+  &mute=1
+  &loop=1
+  &playlist=NidvlEyHVvw
+  &controls=1
+  &modestbranding=1
+  &rel=0
+  &playsinline=1"
+  frameborder="0"
+  allow="autoplay; encrypted-media; picture-in-picture"
+  allowfullscreen>
+</iframe>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="founder" class="founder-section">
+        <div class="container">
+            <div class="founder-grid">
+                <div class="reach-card reveal">
+                    <span class="subtitle">Total Organic Footprint</span>
+                    <h2>28L+</h2>
+                    <p>PEOPLE REACHED</p>
+                </div>
+                <div class="founder-content reveal">
+                    <h2 class="display-text" style="font-size: 3rem; margin-bottom: 30px;">REAL WORLD<br>AUTHORITY</h2>
+                    <p>Beyond marketing, our team actively creates and manages long-form and short-form video content across platforms. 
+                    Giving us first-hand understanding of audience behavior, content performance, and what brands need to stand out — not just in theory, but in practice.</p>
+                    <div class="founder-socials">
+                        <a href="https://youtube.com/@krishtechmy" class="founder-btn hover-trigger"><i class="fa-brands fa-youtube"></i> Visit Channel</a>
+                        <a href="https://instagram.com/krishtechmy" class="founder-btn hover-trigger"><i class="fa-brands fa-instagram"></i> Follow Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    
+
+    <section id="cases" class="case-studies">
+        <div class="container">
+            <span class="subtitle">Impact</span>
+            <h1 class="section-title">Case Studies</h1>
+            <div class="case-tiles">
+
+    <div class="case-tile hover-trigger" onclick="openModal('hospitality')">
+        <h3>Hospitality & Food</h3>
+        <p>Restaurants, cafés & fine-dine brands</p>
+        <span>View Case Study →</span>
+    </div>
+
+    <div class="case-tile hover-trigger" onclick="openModal('healthcare')">
+        <h3>Healthcare</h3>
+        <p>Doctors, clinics & medical professionals</p>
+        <span>View Case Study →</span>
+    </div>
+
+    <div class="case-tile hover-trigger" onclick="openModal('tech')">
+        <h3>Tech Products</h3>
+        <p>Apps, platforms & digital products</p>
+        <span>View Case Study →</span>
+    </div>
+
+    <div class="case-tile hover-trigger" onclick="openModal('beauty')">
+        <h3>Beauty & Personal</h3>
+        <p>Makeup artists & personal brands</p>
+        <span>View Case Study →</span>
+    </div>
+
+    <div class="case-tile hover-trigger" onclick="openModal('travel')">
+        <h3>Travel & Tourism</h3>
+        <p>Tours, destinations & experiences</p>
+        <span>View Case Study →</span>
+    </div>
+
+        </div>
+    </section>
+
+<section class="testimonials">
+  <div class="section-head">
+    <span>CLIENT FEEDBACK</span>
+    <h2>Trusted by Brands We’ve Worked With</h2>
+  </div>
+
+  <div class="testimonial-grid">
+
+    <div class="testimonial-card">
+      <p>
+        We worked with Krix Media in our initial phases, and they proved to be
+        professional, passionate, and reliable. They always acknowledged every
+        task shared with them. We wish them great success in their journey.
+      </p>
+      <h4>Sharath</h4>
+      <span>Partner, Cavo - Fine Dine Kitchen</span>
+    </div>
+
+    <div class="testimonial-card">
+      <p>
+        Our experience with Krix Media was excellent. They produced high-quality,
+        natural content for Rajeshwari Cafe that perfectly aligned with our vision.
+        Their friendly team is highly recommended for anyone seeking tailored
+        media services.
+      </p>
+      <h4>Ved</h4>
+      <span>CEO, Rajeshwari Cafe</span>
+    </div>
+
+    <div class="testimonial-card muted">
+      <p>
+        We’ve worked with several other clients across industries who’ve been
+        impressed by our approach and achieved real, measurable results through
+        our work.
+      </p>
+      <h4>More Client Stories....</h4>
+    
+    </div>
+
+  </div>
+</section>
+
+
+    <section id="team">
+        <div class="container">
+            <span class="subtitle">The Crew</span>
+            <h2 class="section-title">Creative Minds</h2>
+            <div class="team-grid">
+                <div class="team-card hover-trigger">
+                    <img src="Assets\Team\Team 1.jpg">
+                    <h4>Krishna Yekkar</h4><p>Founder & Strategy</p>
+                    <a href="https://www.instagram.com/krishtechmy" target="_blank" class="team-social"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+                <div class="team-card hover-trigger">
+                    <img src="Assets\Team\Team 2.JPG">
+                    <h4>Shriniketh</h4><p>Animator</p>
+                    <a href="https://www.instagram.com/sriniketh_kolle_132006" target="_blank" class="team-social"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+                <div class="team-card hover-trigger">
+                    <img src="Assets\Team\Team 3.jpg">
+                    <h4>Lakshmi Yekkar</h4><p>Digital Growth</p>
+                    <a href="https://www.instagram.com/lakshmi_yekkar" target="_blank" class="team-social"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+                <div class="team-card hover-trigger">
+                    <img src="Assets\Team\Team 4.jpeg">
+                    <h4>Pranava P</h4><p>Ops Support</p>
+                    <a href="https://www.instagram.com/prnva.p" target="_blank" class="team-social"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<section class="main-footer">
+  <div class="container footer-grid">
+
+    <!-- LEFT : BRAND -->
+    <div class="footer-brand">
+      <h3>KRIX MEDIA</h3>
+      <p>Premium Content-first Marketing Agency</p>
+      <span>Based in Bengaluru, Karnataka</span>
+
+      <div class="brand-socials">
+        <a href="https://www.instagram.com/krixmedia" target="_blank" class="social-btn">
+          <i class="fa-brands fa-instagram"></i>
+        </a>
+        <a href="https://www.linkedin.com/company/krix-media" target="_blank" class="social-btn">
+          <i class="fa-brands fa-linkedin"></i>
+        </a>
+      </div>
+    </div>
+
+    <!-- MIDDLE : CONTACT -->
+    <div class="footer-contact">
+      <h4>Contact Us</h4>
+
+      <a href="mailto:krixmedia18@gmail.com" class="contact-link hover-trigger">
+        <i class="fa-solid fa-envelope"></i>
+        krixmedia18@gmail.com
+      </a>
+
+      <a href="tel:+917975049292" class="contact-link hover-trigger">
+        <i class="fa-solid fa-phone"></i>
+        +91 79750 49292
+      </a>
+    </div>
+
+    <!-- RIGHT : EXPLORE -->
+    <div class="footer-nav">
+      <h4>Explore</h4>
+      <a href="#work">Work</a>
+      <a href="#services">Services</a>
+      <a href="#team">Team</a>
+    </div>
+
+  </div>
+</section>
+
+
+
+
+<!-- Footer Bottom -->
+<footer class="footer-bottom">
+  <div class="container footer-flex">
+    <div>© 2025 Krix Media.</div>
+    <div class="footer-legal">
+      <button onclick="openModal('privacy')">Privacy Policy</button>
+      <button onclick="openModal('terms')">Terms & Conditions</button>
+    </div>
+  </div>
+</footer>
+
+    <div id="modal" class="modal">
+        <div class="modal-inner">
+            <span class="modal-close hover-trigger" onclick="closeModal()">×</span>
+            <div id="modal-content" class="modal-content"></div>
+        </div>
+    </div>
+
+<div class="quote-fab">
+  <div class="quote-card">
+    <p class="quote-title">Get your quotation</p>
+    <p class="quote-line">Let’s build something impactful.</p>
+
+    <div class="quote-contact">
+      <span>📧 krixmedia@gmail.com</span>
+      <span>📞 +91 7975049292</span>
+    </div>
+  </div>
+
+  <div class="quote-button">
+    Get Quote
+  </div>
+</div>
+
+
+    <script>
+        // --- 1. CUSTOM CURSOR ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX; const posY = e.clientY;
+            cursorDot.style.left = `${posX}px`; cursorDot.style.top = `${posY}px`;
+            cursorOutline.animate({ left: `${posX}px`, top: `${posY}px` }, { duration: 500, fill: "forwards" });
+        });
+        document.querySelectorAll('a, button, .hover-trigger').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+        });
+
+        // --- 2. TEXT ROTATION ---
+        const stackItems = document.querySelectorAll('.word-stack span');
+        let currentIndex = 0;
+        setInterval(() => {
+            const current = stackItems[currentIndex];
+            const nextIndex = (currentIndex + 1) % stackItems.length;
+            const next = stackItems[nextIndex];
+            current.classList.remove('active'); current.classList.add('exit');
+            next.classList.remove('exit'); next.classList.add('active');
+            setTimeout(() => current.classList.remove('exit'), 800);
+            currentIndex = nextIndex;
+        }, 3000);
+
+        // --- 3. SCROLL REVEAL & COUNTERS ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if(e.isIntersecting) {
+                    e.target.classList.add('active');
+                    if(e.target.classList.contains('stat')) {
+                        const counter = e.target.querySelector('.counter');
+                        if(counter) {
+                            const target = +counter.getAttribute('data-target');
+                            let count = 0;
+                            const update = () => { count++; counter.innerText = count; if(count < target) requestAnimationFrame(update); };
+                            update();
+                        }
+                    }
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal, .stat').forEach(el => observer.observe(el));
+
+        // --- 4. SMART VIDEO OBSERVER (Lazy Loading + Auto Pause) ---
+        const videoObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                const video = entry.target;
+                if (entry.isIntersecting) {
+                    video.play().catch(() => { video.muted = true; video.play(); });
+                } else {
+                    video.pause();
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.hero-card video').forEach(v => videoObserver.observe(v));
+
+        
+
+        // --- 6. MODAL CONTENT ---
+        const contentMap = {
+		'hospitality': `
+<h2>HOSPITALITY & FOOD</h2>
+
+<p class="focus-text">
+Restaurants don’t fail because of food. They fail because people don’t feel the experience before visiting.
+</p>
+
+<div class="client-block">
+<h3>Brands We Worked With</h3>
+<p><strong>Rajeshwari Cafe</strong> · <strong>Cavo (Fine Dine Kitchen)</strong></p>
+</div>
+
+<div class="client-block">
+<h3>The Challenge</h3>
+<p>
+Both brands were in critical phases — one during launch and the other during early positioning.
+The challenge was to create immediate trust, appetite appeal, and brand recall across social media and food delivery platforms.
+</p>
+</div>
+
+<div class="client-block">
+<h3>What We Did</h3>
+<ul>
+<li>End-to-end pre-launch and post-launch visual planning</li>
+<li>Food photography optimized for Swiggy & Zomato</li>
+<li>Cinematic short-form videos highlighting ambience and experience</li>
+<li>Consistent content execution to maintain brand identity</li>
+</ul>
+</div>
+
+<div class="client-block">
+<h3>How It Helped the Business</h3>
+<p>
+The visuals made both brands feel premium and trustworthy from day one.
+Customers could sense the quality before visiting, resulting in better footfall, engagement, and recall.
+</p>
+</div>
+
+<div class="impact-box">
+<h4>Outcome</h4>
+<p>
+Strong launch traction, improved online perception, and consistent customer engagement.
+Both brands established themselves clearly in their respective market segments.
+</p>
+</div>
+`,
+            'healthcare': `
+<h2>HEALTHCARE</h2>
+
+<p class="focus-text">
+In healthcare, trust is everything. Content must educate, not sell.
+</p>
+
+<div class="client-block">
+<h3>Clients</h3>
+<p><strong>Doctors & Clinics</strong> (Healthcare professionals)</p>
+</div>
+
+<div class="client-block">
+<h3>The Challenge</h3>
+<p>
+Healthcare professionals needed a clean, professional online presence without appearing promotional.
+The content had to build credibility while remaining ethical and informative.
+</p>
+</div>
+
+<div class="client-block">
+<h3>What We Did</h3>
+<ul>
+<li>Educational video editing for patient awareness</li>
+<li>Clean pacing and distraction-free visuals</li>
+<li>Focus on clarity, accuracy, and professionalism</li>
+</ul>
+</div>
+
+<div class="client-block">
+<h3>How It Helped</h3>
+<p>
+The content improved understanding, trust, and audience retention.
+Doctors were able to communicate expertise clearly without compromising credibility.
+</p>
+</div>
+
+<div class="impact-box">
+<h4>Outcome</h4>
+<p>
+Stronger patient trust, improved engagement, and a professional digital presence aligned with healthcare standards.
+</p>
+</div>
+`,
+            'tech': `
+<h2>TECH PRODUCTS</h2>
+
+<p class="focus-text">
+Tech products must communicate value instantly. Complexity kills attention.
+</p>
+
+<div class="client-block">
+<h3>Brand</h3>
+<p><strong>Knobly Media</strong></p>
+</div>
+
+<div class="client-block">
+<h3>The Challenge</h3>
+<p>
+Knobly Media needed a promotional video that clearly explained their social media app’s value
+without overwhelming first-time viewers.
+</p>
+</div>
+
+<div class="client-block">
+<h3>What We Did</h3>
+<ul>
+<li>Concept-based promotional video</li>
+<li>Simplified feature-to-benefit storytelling</li>
+<li>Clear visual explanation of the app’s purpose</li>
+</ul>
+</div>
+
+<div class="client-block">
+<h3>How It Helped</h3>
+<p>
+The video communicated the product’s intent quickly, making it easier for users to understand and engage.
+</p>
+</div>
+
+<div class="impact-box">
+<h4>Outcome</h4>
+<p>
+Strong launch support, clearer positioning, and improved initial visibility for the product.
+</p>
+</div>
+`,
+            'beauty': `
+<h2>BEAUTY & PERSONAL</h2>
+
+<p class="focus-text">
+In beauty, skill visibility builds authority faster than ads.
+</p>
+
+<div class="client-block">
+<h3>Client</h3>
+<p><strong>Professional Makeup Artist</strong></p>
+</div>
+
+<div class="client-block">
+<h3>The Challenge</h3>
+<p>
+The client wanted to showcase real expertise and reach a wider audience organically.
+</p>
+</div>
+
+<div class="client-block">
+<h3>What We Did</h3>
+<ul>
+<li>2-day makeup workshop coverage</li>
+<li>Focused on real sessions and transformations</li>
+<li>Optimized content for organic reach</li>
+</ul>
+</div>
+
+<div class="client-block">
+<h3>How It Helped</h3>
+<p>
+The content showcased real skill, real students, and real outcomes — building instant credibility.
+</p>
+</div>
+
+<div class="impact-box">
+<h4>Outcome</h4>
+<p>
+80,000+ organic reach and increased inquiries for training and services.
+</p>
+</div>
+`,
+            'travel': `
+<h2>TRAVEL & TOURISM</h2>
+
+<p class="focus-text">
+Travel content should make people imagine themselves in the journey.
+</p>
+
+<div class="client-block">
+<h3>Brand</h3>
+<p><strong>NJ Tours & Travels</strong></p>
+</div>
+
+<div class="client-block">
+<h3>The Challenge</h3>
+<p>
+The client had travel footage but needed engaging storytelling to hold attention.
+</p>
+</div>
+
+<div class="client-block">
+<h3>What We Did</h3>
+<ul>
+<li>Edited travel footage into narrative-driven videos</li>
+<li>Improved pacing and emotional flow</li>
+</ul>
+</div>
+
+<div class="client-block">
+<h3>How It Helped</h3>
+<p>
+The content became more engaging and memorable, encouraging viewers to explore travel options.
+</p>
+</div>
+
+<div class="impact-box">
+<h4>Outcome</h4>
+<p>
+Higher engagement, longer watch times, and improved audience interest.
+</p>
+</div>
+`,
+
+            'privacy': `
+<h2>PRIVACY POLICY</h2>
+
+<p class="focus-text">
+At Krix Media, we value your privacy and are committed to protecting your personal and business information.
+</p>
+
+<h4>Information We Collect</h4>
+<p>
+We may collect basic details such as name, email address, phone number, business information,
+and project-related data when you contact or work with us.
+</p>
+
+<h4>How We Use Your Information</h4>
+<p>
+Your information is used strictly for communication, service delivery, project coordination,
+invoicing, and internal planning. We do not misuse your data.
+</p>
+
+<h4>Data Sharing</h4>
+<p>
+We do not sell, rent, or trade your personal information. Data may only be shared when required
+by law or with trusted tools necessary to execute your project.
+</p>
+
+<h4>Client Confidentiality</h4>
+<p>
+All client content, footage, and business data are treated as confidential.
+Work is showcased publicly only after completion or with client consent.
+</p>
+
+<h4>Third-Party Platforms</h4>
+<p>
+Krix Media is not responsible for the privacy practices of external platforms
+such as YouTube, Instagram, hosting providers, or social networks.
+</p>
+
+<h4>Your Rights</h4>
+<p>
+You may request access, correction, or deletion of your data by contacting us directly.
+</p>
+
+<p>
+For privacy-related queries, contact us at <strong>krixmedia18@gmail.com</strong>.
+</p>
+`,
+
+'terms': `
+<h2>TERMS & CONDITIONS</h2>
+
+<p class="focus-text">
+Krix Media focuses on long-term brand value and sustainable growth, not instant results.
+</p>
+
+<h4>No Guaranteed Results</h4>
+<p>
+We do not guarantee specific outcomes such as follower growth, revenue increase,
+views, or leads. Performance depends on market conditions, audience behavior,
+and client cooperation.
+</p>
+
+<h4>Minimum Time for Results</h4>
+<p>
+Effective marketing and content strategies typically require a minimum commitment
+of <strong>3 months</strong> to see meaningful results.
+</p>
+
+<h4>Client Responsibilities</h4>
+<p>
+Clients are responsible for providing accurate information, timely approvals,
+and constructive feedback. Delays from the client side may affect timelines.
+</p>
+
+<h4>Payments & Refunds</h4>
+<p>
+All payments are non-refundable once work has commenced. Additional work outside
+the agreed scope may require extra charges.
+</p>
+
+<h4>Content Ownership</h4>
+<p>
+Final deliverables belong to the client after full payment.
+Krix Media reserves the right to display completed work for portfolio and marketing purposes
+unless otherwise agreed in writing.
+</p>
+
+<h4>Professional Conduct</h4>
+<p>
+Krix Media reserves the right to discontinue services in cases of abuse,
+unethical practices, or non-cooperation.
+</p>
+
+<p>
+By working with Krix Media, you agree to these terms and conditions.
+</p>
+`
+
+        };
+
+        const modal = document.getElementById('modal');
+        const contentDiv = document.getElementById('modal-content');
+        function openModal(key) { contentDiv.innerHTML = contentMap[key]; modal.classList.add('open'); }
+        function closeModal() { modal.classList.remove('open'); }
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('nav');
+            if(window.scrollY > 50) nav.classList.add('scrolled');
+            else nav.classList.remove('scrolled');
+        });
+    </script>
+	<script>
+  window.addEventListener("scroll", () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+    document.getElementById("scroll-progress").style.width = progress + "%";
+  });
+</script>
+
+</body>
+</html>
